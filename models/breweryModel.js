@@ -3,7 +3,7 @@ const path = require('path');
 
 class BreweryModel {
     constructor(dbPath) {
-        const absolutePath = path.resolve(__dirname, 'database', 'breweries.db');
+        const absolutePath = path.resolve( 'database', 'breweries.db');
         console.log('Absolute Database Path:', absolutePath);
         this.db = new sqlite3.Database(absolutePath, (err) => {
             if (err) {
@@ -22,6 +22,11 @@ class BreweryModel {
     getBreweryById(id, callback) {
         const query = 'SELECT * FROM "breweries" WHERE id = ?';
         this.db.get(query, [id], callback);
+    }
+
+    getUSBreweries(callback) {
+        const query = 'SELECT state_province FROM "breweries" WHERE country="United States"';
+        this.db.all(query, callback);
     }
 
     createBrewery(brewery, callback) {

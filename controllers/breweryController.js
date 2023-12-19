@@ -15,6 +15,16 @@ class BreweryController {
             }
         });
     }
+    getUSBreweries(req, res) {
+        this.model.getUSBreweries((err, breweries) => {
+            if (err) {
+                console.error('Error retrieving data from SQLite:', err);
+                res.status(500).json({ error: 'Internal Server Error' });
+            } else {
+                res.json(breweries);
+            }
+        });
+    }
 
     getBreweryById(req, res) {
         const id = req.params.id;
