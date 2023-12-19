@@ -19,10 +19,10 @@
         .attr("height", height);
 
     document.body.appendChild(svg.node());
-    
 
-      d3.json("10m.json").then(us => {
-        
+    d3.json("10m.json").then(us => {
+
+        // Fetch data from your API
         fetch('/api/data')
             .then(response => response.json())
             .then(databaseData => {
@@ -46,14 +46,21 @@
         function processData(databaseData, us) {
             const data = new Map();
 
-                    for (const item of databaseData) {
-                const stateId = item.state_id; 
-                data.set(stateId, item.value);
-            }
+            // Sum up values for each state
+            databaseData.forEach(item => {
+                const stateId = item.state_id;
+                const value = item.value;
+                data.set(stateId, (data.get(stateId) || 0) + value);
+            });
 
             return data;
         }
     })
+    .catch(error => console.error('Error fetching TopoJSON data:', error));
+    </script>
+
+</body>
+</html>
     .catch(error => console.error('Error fetching TopoJSON data:', error));
     </script>
 
