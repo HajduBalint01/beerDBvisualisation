@@ -23,7 +23,7 @@
 
       d3.json("10m.json").then(us => {
         
-        fetch('/api/data')
+        fetch('/api/us')
             .then(response => response.json())
             .then(databaseData => {
                 const heatmapData = processData(databaseData, us);
@@ -45,11 +45,20 @@
 
         function processData(databaseData, us) {
             const data = new Map();
+            let statesum = {}
 
-                    for (const item of databaseData) {
-                const stateId = item.state_id; 
-                data.set(stateId, item.value);
+            for (const item of databaseData) {
+               // const stateId = item.state_id;
+               let state = item.state_province
+                if (state in statesum){
+                    statesum[state]+=1;
+               } else {
+                    statesum[state]=1;
+               }
+               // data.set(stateId, item.value);
             }
+            console.log(statesum);
+            console.log(us);
 
             return data;
         }

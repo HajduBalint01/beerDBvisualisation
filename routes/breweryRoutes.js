@@ -13,4 +13,5 @@ const controller = new BreweryController(model);
 router.get('/api/data', controller.getAllBreweries.bind(controller));
 router.get('/api/us', controller.getUSBreweries.bind(controller));
 
+
 module.exports = router;
