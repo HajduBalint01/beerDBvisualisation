@@ -3,7 +3,7 @@ const path = require('path');
 
 class BreweryModel {
     constructor(dbPath) {
-        const absolutePath = path.resolve( 'database', 'breweries.db');
+        const absolutePath = path.resolve(dbPath);
         console.log('Absolute Database Path:', absolutePath);
         this.db = new sqlite3.Database(absolutePath, (err) => {
             if (err) {
@@ -32,7 +32,7 @@ class BreweryModel {
     createBrewery(brewery, callback) {
         const { name, city, state } = brewery;
         const query = 'INSERT INTO "breweries" (name, city, state) VALUES (?, ?, ?)';
-        this.db.run(query, [name, city, state], function(err) {
+        this.db.run(query, [name, city, state], function (err) {
             callback(err, this.lastID);
         });
     }
@@ -40,17 +40,18 @@ class BreweryModel {
     updateBrewery(id, brewery, callback) {
         const { name, city, state } = brewery;
         const query = 'UPDATE "breweries" SET name = ?, city = ?, state = ? WHERE id = ?';
-        this.db.run(query, [name, city, state, id], function(err) {
+        this.db.run(query, [name, city, state, id], function (err) {
             callback(err, this.changes);
         });
     }
 
     deleteBrewery(id, callback) {
         const query = 'DELETE FROM "breweries" WHERE id = ?';
-        this.db.run(query, [id], function(err) {
+        this.db.run(query, [id], function (err) {
             callback(err, this.changes);
         });
     }
 }
+
 
 module.exports = BreweryModel;

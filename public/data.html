@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="controllers/breweryController.js"></script>
+    <title>Data Input Page</title>
+</head>
+<body>
+    <header>
+        <h1>Data Input Page</h1>
+    </header>
+
+    <main>
+        <!-- Form for adding/editing a brewery -->
+        <div id="data-form">
+            <h2>Add/Edit Brewery</h2>
+            <form id="brewery-form">
+                <label for="name">Name:</label>
+                <br>
+                <input type="text" id="name" name="name" required>
+                <br>
+
+                <label for="brewery_type">Brewery Type:</label>
+                <br>
+                <input type="text" id="brewery_type" name="brewery_type">
+                <br>
+
+                <label for="address_1">Address 1:</label>
+                <br>
+                <input type="text" id="address_1" name="address_1">
+                <br>
+
+                <label for="address_2">Address 2:</label>
+                <br>
+                <input type="text" id="address_2" name="address_2">
+                <br>
+
+                <label for="address_3">Address 3:</label>
+                <br>
+                <input type="text" id="address_3" name="address_3">
+                <br>
+
+                <label for="city">City:</label>
+                <br>
+                <input type="text" id="city" name="city" required>
+                <br>
+
+                <label for="state_province">State_province:</label>
+                <br>
+                <input type="text" id="state_province" name="state_province" required>
+                <br>
+
+                <label for="postal_code">Postal Code:</label>
+                <br>
+                <input type="text" id="postal_code" name="postal_code" required>
+                <br>
+
+                <label for="country">Country:</label>
+                <br>
+                <input type="text" id="country" name="country" required>
+                <br>
+
+                <label for="phone">Phone:</label>
+                <br>
+                <input type="text" id="phone" name="phone" required>
+                <br>
+
+                <label for="website_url">Website URL:</label>
+                <br>
+                <input type="text" id="website_url" name="website_url" required>
+                <br>
+
+                <!-- Hidden input for brewery ID (for editing) -->
+                <label for="brewery_id">Brewery ID:</label>
+                <br>
+                <input type="hidden" id="brewery_id" name="brewery_id">
+                <br>
+
+                <button type="button" onclick="addEditBrewery()">Add/Edit Brewery</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Your Brewery Website</p>
+    </footer>
+
+    <script>
+         function addEditBrewery() {
+        const breweryData = {
+            name: document.getElementById('name').value || '',
+            brewery_type: document.getElementById('brewery_type').value || '',
+            address_1: document.getElementById('address_1').value || '',
+            address_2: document.getElementById('address_2').value || '',
+            address_3: document.getElementById('address_3').value || '',
+            city: document.getElementById('city').value || '',
+            state_province: document.getElementById('state_province').value || '',
+            postal_code: document.getElementById('postal_code').value || '',
+            country: document.getElementById('country').value || '',
+            phone: document.getElementById('phone').value || '',
+            website_url: document.getElementById('website_url').value || '',
+            brewery_id: document.getElementById('brewery_id').value || '',
+        };
+
+        // Validation
+        if (!breweryData.name) {
+            console.error('Name is required.');
+            return;
+        }
+        else {console.log(breweryData)}
+
+        
+        fetch('/data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(breweryData),
+        }).then(console.log())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Brewery added/edited:', data);
+            // You can update the UI or perform additional actions as needed
+
+            // Clear the form for the next entry
+            document.getElementById('brewery-form').reset();
+        })
+        .catch(error => {
+            console.error('Error adding/editing brewery:', error);
+            alert('Error adding/editing brewery. Please check the console for details.');
+        });
+    }
+    </script>
+</body>
+</html>

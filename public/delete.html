@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="controllers/breweryController.js"></script>
+    <title>Delete Brewery Page</title>
+</head>
+<body>
+    <header>
+        <h1>Delete Brewery Page</h1>
+    </header>
+
+    <main>
+        <!-- Form for deleting a brewery by ID -->
+        <div id="delete-form">
+            <h2>Delete Brewery by ID</h2>
+            <form id="delete-brewery-form">
+                <label for="breweryId">Brewery ID:</label>
+                <input type="text" id="breweryId" name="breweryId" required><br>
+
+                <button type="button" onclick="deleteBrewery()">Delete Brewery</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Your Brewery Website</p>
+    </footer>
+
+    <script>
+        // Move the deleteBrewery function to a new script
+        function deleteBrewery() {
+            const breweryId = document.getElementById('breweryId').value;
+
+            fetch(`/api/breweries/${breweryId}`, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Brewery deleted:', data);
+                // You can update the UI or perform additional actions as needed
+            })
+            .catch(error => console.error('Error deleting brewery:', error));
+        }
+    </script>
+</body>
+</html>

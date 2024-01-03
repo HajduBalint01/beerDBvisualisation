@@ -1,4 +1,3 @@
-const BreweryModel = require('../models/breweryModel');
 
 class BreweryController {
     constructor(model) {
@@ -43,8 +42,17 @@ class BreweryController {
 
     createBrewery(req, res) {
         const newBrewery = req.body;
-
-        console.log(newBrewery)
+    
+        console.log(newBrewery);
+    
+        // Validation - Check if 'newBrewery' has the expected properties
+        if (!newBrewery || !newBrewery.name) {
+            console.error('Invalid brewery data. Name is required.');
+            res.status(400).json({ error: 'Invalid brewery data. Name is required.' });
+            return;
+        }
+    
+        // Call the model's createBrewery method
         this.model.createBrewery(newBrewery, (err, breweryId) => {
             if (err) {
                 console.error('Error creating new brewery:', err);
@@ -58,17 +66,22 @@ class BreweryController {
     updateBrewery(req, res) {
         const id = req.params.id;
         const updatedBrewery = req.body;
+        console.log('Received request to update brewery with ID', id, 'to:', updatedBrewery);
+
         this.model.updateBrewery(id, updatedBrewery, (err, changes) => {
             if (err) {
                 console.error('Error updating brewery:', err);
                 res.status(500).json({ error: 'Internal Server Error' });
             } else if (changes === 0) {
+                console.log('Brewery not found with ID:', id);
                 res.status(404).json({ error: 'Brewery not found' });
             } else {
+                console.log('Brewery updated successfully:', { id, ...updatedBrewery });
                 res.json({ id, ...updatedBrewery });
             }
         });
     }
+
 
     deleteBrewery(req, res) {
         const id = req.params.id;
@@ -146,4 +159,11 @@ class BreweryController {
     }
 }
 
-module.exports = BreweryController;
+// Replace the existing line:
+// module.exports = BreweryController;
+
+// With the following:
+if (typeof exports !== 'undefined') {
+    exports.BreweryController = BreweryController;
+}
+
