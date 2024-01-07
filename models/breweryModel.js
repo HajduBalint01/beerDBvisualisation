@@ -30,28 +30,27 @@ class BreweryModel {
     }
 
     createBrewery(brewery, callback) {
-        const { name, city, state } = brewery;
-        const query = 'INSERT INTO "breweries" (name, city, state) VALUES (?, ?, ?)';
-        this.db.run(query, [name, city, state], function (err) {
+        // Validation - Check if 'brewery' object exists
+        if (!brewery) {
+            const error = new Error('Invalid brewery data. Brewery object is required.');
+            return callback(error, null);
+        }
+    
+        const { name, city, state_province } = brewery;
+    
+        // Validation - Check if required properties are present
+        if (!name || !city || !state_province) {
+            const error = new Error('Invalid brewery data. Name, city, and state_province are required.');
+            return callback(error, null);
+        }
+    
+        const query = 'INSERT INTO "breweries" (name, city, state_province) VALUES (?, ?, ?)';
+        this.db.run(query, [name, city, state_province], function (err) {
             callback(err, this.lastID);
         });
     }
 
-    updateBrewery(id, brewery, callback) {
-        const { name, city, state } = brewery;
-        const query = 'UPDATE "breweries" SET name = ?, city = ?, state = ? WHERE id = ?';
-        this.db.run(query, [name, city, state, id], function (err) {
-            callback(err, this.changes);
-        });
-    }
 
-    deleteBrewery(id, callback) {
-        const query = 'DELETE FROM "breweries" WHERE id = ?';
-        this.db.run(query, [id], function (err) {
-            callback(err, this.changes);
-        });
-    }
 }
-
 
 module.exports = BreweryModel;

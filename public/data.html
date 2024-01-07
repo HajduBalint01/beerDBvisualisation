@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <script src="controllers/breweryController.js"></script>
     <title>Data Input Page</title>
 </head>
 <body>
@@ -17,7 +17,7 @@
         <!-- Form for adding/editing a brewery -->
         <div id="data-form">
             <h2>Add/Edit Brewery</h2>
-            <form id="brewery-form">
+            <form id="brewery-form" method="POST" action="/data" >
                 <label for="name">Name:</label>
                 <br>
                 <input type="text" id="name" name="name" required>
@@ -55,7 +55,7 @@
 
                 <label for="postal_code">Postal Code:</label>
                 <br>
-                <input type="text" id="postal_code" name="postal_code" required>
+                <input type="text" id="postal_code" name="postal_code">
                 <br>
 
                 <label for="country">Country:</label>
@@ -65,12 +65,12 @@
 
                 <label for="phone">Phone:</label>
                 <br>
-                <input type="text" id="phone" name="phone" required>
+                <input type="text" id="phone" name="phone">
                 <br>
 
                 <label for="website_url">Website URL:</label>
                 <br>
-                <input type="text" id="website_url" name="website_url" required>
+                <input type="text" id="website_url" name="website_url">
                 <br>
 
                 <!-- Hidden input for brewery ID (for editing) -->
@@ -79,65 +79,16 @@
                 <input type="hidden" id="brewery_id" name="brewery_id">
                 <br>
 
-                <button type="button" onclick="addEditBrewery()">Add/Edit Brewery</button>
+                <button type="submit" >Send</button>
             </form>
         </div>
     </main>
-
+    <form method="POST" action="/data">
+        <input type="text" id="bar" name="bar" />
+        <button type="submit">Send</button>
+    </form>
     <footer>
         <p>&copy; 2023 Your Brewery Website</p>
     </footer>
-
-    <script>
-         function addEditBrewery() {
-        const breweryData = {
-            name: document.getElementById('name').value || '',
-            brewery_type: document.getElementById('brewery_type').value || '',
-            address_1: document.getElementById('address_1').value || '',
-            address_2: document.getElementById('address_2').value || '',
-            address_3: document.getElementById('address_3').value || '',
-            city: document.getElementById('city').value || '',
-            state_province: document.getElementById('state_province').value || '',
-            postal_code: document.getElementById('postal_code').value || '',
-            country: document.getElementById('country').value || '',
-            phone: document.getElementById('phone').value || '',
-            website_url: document.getElementById('website_url').value || '',
-            brewery_id: document.getElementById('brewery_id').value || '',
-        };
-
-        // Validation
-        if (!breweryData.name) {
-            console.error('Name is required.');
-            return;
-        }
-        else {console.log(breweryData)}
-
-        
-        fetch('/data', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(breweryData),
-        }).then(console.log())
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Brewery added/edited:', data);
-            // You can update the UI or perform additional actions as needed
-
-            // Clear the form for the next entry
-            document.getElementById('brewery-form').reset();
-        })
-        .catch(error => {
-            console.error('Error adding/editing brewery:', error);
-            alert('Error adding/editing brewery. Please check the console for details.');
-        });
-    }
-    </script>
 </body>
 </html>
