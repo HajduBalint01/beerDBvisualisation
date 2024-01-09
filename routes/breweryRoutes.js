@@ -12,6 +12,11 @@ const controller = new BreweryController(model);
 router.get('/api/breweries', controller.getAllBreweries.bind(controller));
 router.get('/api/breweries/:id', controller.getBreweryById.bind(controller));
 router.post('/api/breweries', controller.createBrewery.bind(controller));
+router.delete('/api/breweries/:id', controller.deleteBreweryById.bind(controller));
+
+router.get('/delete', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public', 'delete.html'));
+});
 
 // Additional endpoint for getting US breweries
 router.get('/api/us', controller.getUSBreweries.bind(controller));
@@ -28,6 +33,8 @@ router.post('/data', (req, res) => {
   // Call the createBrewery method in your controller to insert the data into the database
   controller.createBrewery(req, res);
 });
+
+router.delete('/api/breweries/:id', controller.deleteBreweryById.bind(controller));
 
 // Serve data.html from the public folder
 router.get('/data', (req, res) => {

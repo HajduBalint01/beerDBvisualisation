@@ -61,6 +61,20 @@ class BreweryController {
         });
     }
 
+    deleteBreweryById(req, res) {
+        const id = req.params.id;
+    
+        // Call the model's deleteBreweryById method
+        this.model.deleteBreweryById(id, (err) => {
+            if (err) {
+                console.error('Error deleting brewery from SQLite:', err);
+                res.status(500).json({ error: 'Internal Server Error' });
+            } else {
+                res.json({ message: 'Brewery deleted successfully' });
+            }
+        });
+    }
+
     
 
     transformState(country, state) {

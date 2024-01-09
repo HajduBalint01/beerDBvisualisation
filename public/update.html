@@ -1,26 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <title>Data Input Page</title>
+    <title>Update Brewery</title>
 </head>
 <body>
     <header>
-        <h1>Data Input Page</h1>
+        <h1>Update Brewery</h1>
     </header>
 
     <main>
-        <!-- Form for adding/editing a brewery -->
-        <div id="data-form">
-            <h2>Add/Edit Brewery</h2>
-            <form id="brewery-form" method="POST" action="/data" >
+        <!-- Form for updating the brewery -->
+        <div id="update-form">
+            <h2>Update Brewery Data</h2>
+            <form id="brewery-update-form" method="PUT" action="/update/:id">
                 <label for="name">Name:</label>
                 <br>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" required value="Brewery Name">
                 <br>
 
                 <label for="brewery_type">Brewery Type:</label>
@@ -57,21 +54,14 @@
                 <br>
                 <input type="text" id="latitude" name="latitude">
                 <br>
+               
 
-                <!-- Hidden input for brewery ID (for editing) -->
-                <label for="brewery_id">Brewery ID:</label>
-                <br>
-                <input type="hidden" id="brewery_id" name="brewery_id">
-                <br>
-
-                <button type="submit" >Send</button>
+                <button type="submit">Update</button>
             </form>
         </div>
     </main>
-    <form method="POST" action="/data">
-        <input type="text" id="bar" name="bar" />
-        <button type="submit">Send</button>
-    </form>
+    
+
     <footer>
         <p>&copy; 2023 Your Brewery Website</p>
     </footer>

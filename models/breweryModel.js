@@ -50,6 +50,11 @@ class BreweryModel {
         });
     }
 
+    deleteBreweryById(id, callback) {
+        const query = 'DELETE FROM "breweries" WHERE id = ?';
+        this.db.run(query, [id], callback);
+    }
+
 
 }
 
