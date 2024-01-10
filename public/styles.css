@@ -1,41 +1,41 @@
+
 body {
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    font-family: 'Arial', sans-serif;
+}
+
+header, main, footer {
+    width: 100%;
 }
 
 header {
     background-color: #333;
-    color: #fff;
-    padding: 1rem;
+    color: white;
     text-align: center;
-}
-
-.center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Ensure full height of the viewport */
-    margin: 0;
+    padding: 1em;
 }
 
 main {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    height: 80vh;
-}
-
-#map-container {
-    display: block;
 }
 
 footer {
     background-color: #333;
-    color: #fff;
+    color: white;
     text-align: center;
-    padding: 1rem;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+    padding: 1em;
+}
+
+/* Adjustments for smaller screens */
+@media only screen and (max-width: 600px) {
+    header, main, footer {
+        width: 100%;
+    }
+
+    main {
+        padding: 1em;
+    }
 }

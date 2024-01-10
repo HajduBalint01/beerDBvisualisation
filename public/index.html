@@ -9,6 +9,15 @@
     <script src="https://unpkg.com/topojson@3"></script>
     <script type =module src="controllers/breweryController.js"></script>
     <title>US Map with State-wise Heatmap</title>
+    <style>
+        /* Add these styles for positioning and sizing */
+        #dropdown-container {
+            position: absolute;
+            top: 20%;
+            right: 500px;
+            font-size: 25px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -16,6 +25,16 @@
     </header>
 
     <main>
+        <div id="dropdown-container">
+            <label for="page-selection">Select Page:</label>
+            <select id="page-selection" onchange="navigateToPage()">
+                <option value="/">Home</option>
+                <option value="/delete">Delete</option>
+                <option value="/data">Add</option>
+                <option value="/api/breweries">List of Data</option>
+            </select>
+        </div>
+
         <div id="map-container"></div>
     </main>
 
@@ -24,6 +43,13 @@
     </footer>
 
     <script>
+         function navigateToPage() {
+            const selectElement = document.getElementById('page-selection');
+            const selectedValue = selectElement.value;
+            window.location.href = selectedValue;
+        }
+
+
         const width = 1200; // Adjusted width
         const height = 800; // Adjusted height
 
@@ -36,31 +62,34 @@
 
         document.getElementById("map-container").appendChild(svg.node());
 
-        d3.json("10m.json").then(us => {
+        let colorScale = d3.scaleSequential(d3.interpolateBlues);
 
-            fetch('/api/us')
-                .then(response => response.json())
-                .then(databaseData => {
-                    const statesum = processData(databaseData, us);
+d3.json("10m.json").then(us => {
+    fetch('/api/us')
+        .then(response => response.json())
+        .then(databaseData => {
+            const statesum = processData(databaseData, us);
 
-                    // Simple color scale for the heatmap
-                    const colorScale = d3.scaleSequential(d3.interpolateBlues)
-                        .domain([0, d3.max(Object.values(statesum))]);
+            // Simple color scale for the heatmap
+            colorScale.domain([0, d3.max(Object.values(statesum))]);
 
-                    const path = d3.geoPath();
+            const path = d3.geoPath();
 
-                    svg.append("g")
-                        .selectAll("path")
-                        .data(topojson.feature(us, us.objects.states).features)
-                        .join("path")
-                        .attr("fill", d => {
-                            const stateFIPS = d.id;
-                            return colorScale(statesum[stateFIPS] || 0);
-                        })
-                        .attr("d", path);
-
+            svg.append("g")
+                .selectAll("path")
+                .data(topojson.feature(us, us.objects.states).features)
+                .join("path")
+                .attr("fill", d => {
+                    const stateFIPS = d.id;
+                    return colorScale(statesum[stateFIPS] || 0);
                 })
-                .catch(error => console.error('Error fetching data:', error));
+                .attr("d", path);
+
+
+        })
+        .catch(error => console.error('Error fetching data:', error));
+});
+       // Function to transform state to FIPS code    
 
             function transformStateToUSFIPS(state) {
                 const stateToFIPS = {
@@ -141,8 +170,8 @@
 
                 return statesum;
             }
-        })
-        .catch(error => console.error('Error fetching TopoJSON data:', error));
+        
+       
     </script>
 </body>
 </html>

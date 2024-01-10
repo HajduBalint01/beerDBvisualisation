@@ -1,8 +1,11 @@
+// breweryRoutes.js
 const express = require('express');
+const path = require('path');
 const BreweryController = require('../controllers/breweryController');
 const BreweryModel = require('../models/breweryModel');
+const authMiddleware = require('../middleware/Middleware'); // Include auth middleware
+
 const router = express.Router();
-const path = require('path');
 
 const dbPath = './database/breweries.db';
 const model = new BreweryModel(dbPath);
@@ -22,23 +25,21 @@ router.get('/delete', (req, res) => {
 router.get('/api/us', controller.getUSBreweries.bind(controller));
 
 // Handle form submission from data.html
-router.post('/data', (req, res) => {
-  const newBrewery = req.body;
+router.post('/data', authMiddleware, (req, res) => { // Protect the data endpoint
+    const newBrewery = req.body;
 
-  // Validate the incoming data (you can add more validation as needed)
-  if (!newBrewery || !newBrewery.name || !newBrewery.city || !newBrewery.state_province) {
-    return res.status(400).json({ error: 'Invalid brewery data. Name, city, and state_province are required.' });
-  }
+    // Validate the incoming data (you can add more validation as needed)
+    if (!newBrewery || !newBrewery.name || !newBrewery.city || !newBrewery.state_province) {
+        return res.status(400).json({ error: 'Invalid brewery data. Name, city, and state_province are required.' });
+    }
 
-  // Call the createBrewery method in your controller to insert the data into the database
-  controller.createBrewery(req, res);
+    // Call the createBrewery method in your controller to insert the data into the database
+    controller.createBrewery(req, res);
 });
 
-router.delete('/api/breweries/:id', controller.deleteBreweryById.bind(controller));
-
 // Serve data.html from the public folder
-router.get('/data', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public', 'data.html'));
+router.get('/data', authMiddleware, (req, res) => { // Protect the data endpoint
+    res.sendFile(path.join(__dirname, '../public', 'data.html'));
 });
 
 // Serve index.html from the public folder
@@ -46,5 +47,20 @@ router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
-module.exports = router;
+// Add a login endpoint
+router.post('/login', (req, res) => {
+    const { username, password } = req.body;
 
+    // Check if the provided credentials are correct (replace this with your actual logic)
+    const isValidCredentials = (username === 'admin' && password === 'admin');
+
+    if (isValidCredentials) {
+        // Set the authenticated status in the session
+        req.session.authenticated = true;
+        res.json({ message: 'Login successful' });
+    } else {
+        res.status(401).json({ message: 'Invalid credentials' });
+    }
+});
+
+module.exports = router;
