@@ -1,4 +1,4 @@
-
+/* styles.css */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -29,6 +29,12 @@ footer {
     padding: 1em;
 }
 
+/* Adjust space between entries in /data page */
+#data-form label,
+#data-form input {
+    margin-bottom: 1px; /* You can adjust this value to your preference */
+}
+
 /* Adjustments for smaller screens */
 @media only screen and (max-width: 600px) {
     header, main, footer {
@@ -38,4 +44,65 @@ footer {
     main {
         padding: 1em;
     }
+}
+
+/* Add these styles for positioning and sizing */
+#dropdown-container {
+    position: absolute;
+    top: 10%;
+    right: 400px;
+    font-size: 25px;
+}
+
+/* Common button styles */
+.button, .submit-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button:hover, .submit-button:hover {
+    background-color: #0056b3;
+}
+
+/* Additional styles for the login page */
+.login-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+    margin: 0 auto; /* Center the login container horizontally */
+    margin-top: 10%; /* Adjust the top margin to center vertically */
+}
+
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
 }

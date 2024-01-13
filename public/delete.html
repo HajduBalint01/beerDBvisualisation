@@ -11,6 +11,23 @@
 <body>
     <header>
         <h1>Delete Brewery Page</h1>
+        <div id="dropdown-container">
+            <label for="page-selection">Select Page:</label>
+            <select id="page-selection" onchange="navigateToPage()">
+                <option value="/">Home</option>
+                <option value="/delete">Delete</option>
+                <option value="/data">Add</option>
+                <option value="/api/breweries">List of Data</option>
+            </select>
+        </div>
+
+        <script>
+            function navigateToPage() {
+                const selectElement = document.getElementById('page-selection');
+                const selectedValue = selectElement.value;
+                window.location.href = selectedValue;
+            }
+        </script>
     </header>
 
     <main>
@@ -40,8 +57,17 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Brewery deleted:', data);
-                // You can update the UI or perform additional actions as needed
+                // Check if the response contains an error
+                if (data.error) {
+                    // Show an alert with the error message
+                    alert('Error: ' + data.error);
+                } else {
+                    // Show a popup message
+                    alert('Brewery has been deleted');
+
+                    // Redirect to the main page ("/")
+                    window.location.href = '/';
+                }
             })
             .catch(error => console.error('Error deleting brewery:', error));
         }

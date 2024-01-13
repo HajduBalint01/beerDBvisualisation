@@ -46,6 +46,11 @@ class BreweryModel {
     
         const query = 'INSERT INTO "breweries" (name, city, state_province) VALUES (?, ?, ?)';
         this.db.run(query, [name, city, state_province], function (err) {
+            if (err) {
+                console.error('Error inserting into "breweries":', err);
+            } else {
+                console.log('New brewery inserted with ID:', this.lastID);
+            }
             callback(err, this.lastID);
         });
     }

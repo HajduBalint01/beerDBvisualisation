@@ -11,6 +11,23 @@
 <body>
     <header>
         <h1>Data Input Page</h1>
+        <div id="dropdown-container">
+            <label for="page-selection">Select Page:</label>
+            <select id="page-selection" onchange="navigateToPage()">
+                <option value="/">Home</option>
+                <option value="/delete">Delete</option>
+                <option value="/data">Add</option>
+                <option value="/api/breweries">List of Data</option>
+            </select>
+        </div>
+
+        <script>
+            function navigateToPage() {
+                const selectElement = document.getElementById('page-selection');
+                const selectedValue = selectElement.value;
+                window.location.href = selectedValue;
+            }
+        </script>
     </header>
 
     <main>
@@ -19,54 +36,101 @@
             <h2>Add/Edit Brewery</h2>
             <form id="brewery-form" method="POST" action="/data" >
                 <label for="name">Name:</label>
-                <br>
                 <input type="text" id="name" name="name" required>
                 <br>
 
                 <label for="brewery_type">Brewery Type:</label>
-                <br>
                 <input type="text" id="brewery_type" name="brewery_type" required>
                 <br>
 
                 <label for="city">City:</label>
-                <br>
                 <input type="text" id="city" name="city" required>
                 <br>
 
                 <label for="state_province">State_province:</label>
-                <br>
                 <input type="text" id="state_province" name="state_province" required>
                 <br>
 
                 <label for="postal_code">Postal Code:</label>
-                <br>
                 <input type="text" id="postal_code" name="postal_code">
                 <br>
 
                 <label for="country">Country:</label>
-                <br>
                 <input type="text" id="country" name="country" required>
                 <br>
 
                 <label for="longitude">longitude:</label>
-                <br>
                 <input type="text" id="longitude" name="longitude">
                 <br>
 
                 <label for="latitude">latitude:</label>
-                <br>
                 <input type="text" id="latitude" name="latitude">
                 <br>
 
                 <!-- Hidden input for brewery ID (for editing) -->
                 <label for="brewery_id">Brewery ID:</label>
-                <br>
                 <input type="hidden" id="brewery_id" name="brewery_id">
                 <br>
 
                 <button type="submit" >Send</button>
             </form>
         </div>
+        <script>
+        function showPopup(message) {
+            alert(message);
+        }
+
+        // Function to handle form submission
+        function handleFormSubmission() {
+            const form = document.getElementById('brewery-form');
+
+            // Create a FormData object to easily construct a key/value pair representation of form fields
+            const formData = new FormData(form);
+
+            // Convert FormData to a plain object
+            const plainFormData = {};
+            formData.forEach((value, key) => {
+                plainFormData[key] = value;
+            });
+
+            // Fetch options for form submission
+            const fetchOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // Set the content type to JSON
+                },
+                body: JSON.stringify(plainFormData), // Convert the data to JSON
+            };
+
+            // Assuming your form has an action attribute set to "/data"
+            const action = form.getAttribute('action');
+
+            // Perform the form submission using fetch
+            fetch(action, fetchOptions)
+                .then(response => response.json())
+                .then(data => {
+                    // Check if the response contains an error
+                    if (data.error) {
+                        // Show an alert with the error message
+                        showPopup('Error: ' + data.error);
+                    } else {
+                        // Show a popup message
+                        showPopup('Data has been updated');
+
+                        // Redirect to the main page ("/")
+                        window.location.href = '/';
+                    }
+                })
+                .catch(error => console.error('Error submitting form:', error));
+        }
+
+        // Attach the handleFormSubmission function to the form's submit event
+        document.getElementById('brewery-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+            handleFormSubmission(); // Call the custom form submission function
+        });
+
+        </script>
     </main>
     <footer>
         <p>&copy; 2023 Your Brewery Website</p>
