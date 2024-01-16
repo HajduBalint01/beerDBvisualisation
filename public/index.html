@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/topojson@3"></script>
-    <script src=https://observablehq.com/@d3/color-legend></script>
+    <script src="https://observablehq.com/@d3/color-legend"></script>
     <script type="module" src="../controllers/breweryController.js"></script>
 
     <title>US Map with State-wise Heatmap</title>
@@ -16,9 +16,10 @@
     <header>
         <h1>US Map with State-wise Heatmap</h1>
 
-        <div id="dropdown-container">
+        <div id="navbar">
             <label for="page-selection">Select Page:</label>
             <select id="page-selection" onchange="navigateToPage()">
+                <option value="">Select Page</option>
                 <option value="/">Home</option>
                 <option value="/delete">Delete</option>
                 <option value="/data">Add</option>
@@ -37,24 +38,25 @@
 
     <main>
         <div id="map-container"></div>
+        <div id="tooltip"></div>
     </main>
 
     <footer>
         <p>&copy; 2023 Your Brewery Website</p>
     </footer>
 
-    <script type=module >
-        import {Legend,transformStateToUSFIPS,processData} from "./dataprocess.js"
-     
+    <script type="module">
+        import { Legend, transformStateToUSFIPS, processData } from "./dataprocess.js";
+
         const statesum = {};
 
         Promise.all([
             d3.json("10m.json"),
             fetch('/api/us').then(response => response.json())
         ]).then(([us, databaseData]) => {
-            processData(databaseData,statesum);
+            processData(databaseData, statesum);
 
-        // generation of the map
+            // generation of the map
 
             const width = 1200;
             const height = 800;
@@ -75,18 +77,47 @@
 
             svg.append("g")
                 .attr("transform", "translate(610,20)")
-                .append(() => Legend(colorScale, {title: "Number of breweries", width: 260}));
-         
+                .append(() => Legend(colorScale, { title: "Number of breweries", width: 260 }));
+
             svg.append("g")
                 .selectAll("path")
                 .data(topojson.feature(us, us.objects.states).features)
                 .join("path")
                 .attr("fill", d => colorScale(statesum[d.id] || 0))
-                .attr("d", path);
-            
-        }).catch(error => console.error('Error fetching or processing data:', error));
+                .attr("d", path)
 
-        
+                //mouseover :
+                .on("mouseover", (event, d) => handleMouseover(event, d)) // Attach mouseover event
+                .on("mouseout", () => handleMouseout()); // Attach mouseout event
+
+                   // Function to get state name from FIPS code
+                   function handleMouseover(event, d) {
+    // Create or select the tooltip element
+    let tooltip = d3.select("#tooltip");
+
+    // Get the state name from the FIPS code
+    const stateName = transformStateToUSFIPS(d.id);
+
+    // Update the tooltip content with state name and statesum
+    tooltip.html(`<strong>${stateName}</strong><br>Statesum: ${statesum[d.id] || 0}`);
+
+    // Calculate the position of the tooltip based on the mouse event
+    const x = event.pageX + 10;
+    const y = event.pageY - 10;
+
+    // Set the tooltip position
+    tooltip.style("left", x + "px")
+        .style("top", y + "px");
+
+    // Show the tooltip
+    tooltip.style("display", "block");
+}
+
+function handleMouseout() {
+    // Hide the tooltip on mouseout
+    d3.select("#tooltip").style("display", "none");
+}
+                }).catch(error => console.error('Error fetching or processing data:', error));
     </script>
 </body>
 </html>

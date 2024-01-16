@@ -46,6 +46,43 @@ footer {
     }
 }
 
+.navbar {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+    margin: 0 auto; /* Center the navbar horizontally */
+    margin-top: 10%; /* Adjust the top margin to center vertically */
+}
+
+.navbar label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.navbar input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
+
+.navbar button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.navbar button:hover {
+    background-color: #0056b3;
+}
+
 /* Add these styles for positioning and sizing */
 #dropdown-container {
     position: absolute;
@@ -105,4 +142,15 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+#tooltip {
+    position: absolute;
+    display: none;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
