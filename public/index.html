@@ -90,33 +90,30 @@
                 .on("mouseover", (event, d) => handleMouseover(event, d)) // Attach mouseover event
                 .on("mouseout", () => handleMouseout()); // Attach mouseout event
 
-                   // Function to get state name from FIPS code
+                
                    function handleMouseover(event, d) {
-    // Create or select the tooltip element
-    let tooltip = d3.select("#tooltip");
+                // Create or select the tooltip element
+                let tooltip = d3.select("#tooltip");
 
-    // Get the state name from the FIPS code
-    const stateName = transformStateToUSFIPS(d.id);
+                // Get the state name from the FIPS code
+                const stateName = transformStateToUSFIPS(d.id);
 
-    // Update the tooltip content with state name and statesum
-    tooltip.html(`<strong>${stateName}</strong><br>Statesum: ${statesum[d.id] || 0}`);
+                tooltip.html(`<strong>${stateName}</strong><br>Statesum: ${statesum[d.id] || 0}`);
 
-    // Calculate the position of the tooltip based on the mouse event
-    const x = event.pageX + 10;
-    const y = event.pageY - 10;
+                const x = event.pageX + 10;
+                const y = event.pageY - 10;
 
-    // Set the tooltip position
-    tooltip.style("left", x + "px")
-        .style("top", y + "px");
+                
+                tooltip.style("left", x + "px")
+                    .style("top", y + "px");
 
-    // Show the tooltip
-    tooltip.style("display", "block");
-}
+                
+                tooltip.style("display", "block");
+            }
 
-function handleMouseout() {
-    // Hide the tooltip on mouseout
-    d3.select("#tooltip").style("display", "none");
-}
+            function handleMouseout() {
+                d3.select("#tooltip").style("display", "none");
+            }
                 }).catch(error => console.error('Error fetching or processing data:', error));
     </script>
 </body>
