@@ -16,31 +16,41 @@ footer {
     bottom: 0;
 }
 
+.page-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; 
+    position: relative;
+}
+
 main {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Center vertically */
-    position: relative; /* Set position to relative */
+    justify-content: center; 
+    position: relative; 
 }
 
 header {
     background-color: #333;
     color: white;
     text-align: center;
-    padding: 0.5em; /* Adjust the padding to make the header bar smaller */
+    padding: 0.5em; 
 }
 
 .title-dropdown-container {
+    width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center; /* Center vertically */
+    justify-content: center;
+    align-items: center;
 }
 
 .title {
+    text-align: center;
     flex: 1;
-    text-align: center; /* Center horizontally */
 }
 
 main {
@@ -59,7 +69,8 @@ footer {
 /* Adjust space between entries in /data page */
 #data-form label,
 #data-form input {
-    margin-bottom: 1px; /* You can adjust this value to your preference */
+    margin-bottom: 1px; 
+
 }
 
 /* Adjustments for smaller screens */
@@ -103,14 +114,21 @@ footer {
     color: white;
     padding: 14px 16px;
     background-color: inherit;
-    font-family: inherit; /* Important for vertical align on mobile phones */
-    margin: 0; /* Important for vertical align on mobile phones */
+    font-family: inherit; 
+    margin: 0; 
   }
+   
+  .dropbtn {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 16px;
+    background-color: #007bff; 
+    font-family: inherit;
+    margin: 0;
+}
   
-  /* Add a red background color to navbar links on hover */
-  .navbar a:hover, .dropdown:hover .dropbtn {
-    background-color: red;
-  }
   
   /* Dropdown content (hidden by default) */
   .dropdown-content {
@@ -120,7 +138,7 @@ footer {
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
-    top: 40px; /* Adjust the top value to move the dropdown up or down */
+    top: 40px;
 }
 
 
@@ -152,10 +170,56 @@ footer {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
     text-align: center;
-    margin: 0 auto; /* Center the login container horizontally */
-    margin-top: 10%; /* Adjust the top margin to center vertically */
+    margin: 0 auto; 
+    margin-top: 10%; 
 }
 
+.header-title {
+    font-size: 1.5em; 
+    margin: 0;
+    line-height: 1.5; 
+    vertical-align: middle; 
+}
+
+/* Additional styles for the content header */
+.content-header {
+    text-align: center;
+    margin: 15px 0; 
+}
+
+.header-title {
+    font-size: 1.5em; 
+    margin: 0;
+    line-height: 1.5; 
+    vertical-align: middle; 
+}
+
+.header-title {
+    font-size: 1.5em; 
+    margin: 0;
+    line-height: 1.5; 
+    vertical-align: middle; 
+}
+
+
+/* Additional styles for the content header */
+.content-header {
+    text-align: center;
+    margin: 10px 0; 
+}
+
+button {
+    background-color: #007bff; 
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
 
 label {
     display: block;
@@ -192,6 +256,20 @@ button:hover {
     border-radius: 4px;
     font-size: 14px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    white-space: nowrap; /* Prevent line breaks */
+}
+
+/* Adjust these styles for positioning the tooltip */
+#tooltip.active {
+    display: block;
+}
+
+#tooltip.active.left {
+    transform: translateX(-100%);
+}
+
+#tooltip.active.right {
+    transform: translateX(0);
 }
 
 * Add these styles for positioning and sizing */
@@ -203,13 +281,13 @@ button:hover {
 }
 
 /* Dropdown button */
-.dropbtn {
+.dropdown .dropbtn {
     font-size: 16px;
     border: none;
     outline: none;
     color: white;
     padding: 14px 16px;
-    background-color: inherit;
+    background-color: #007bff; 
     font-family: inherit;
     margin: 0;
 }

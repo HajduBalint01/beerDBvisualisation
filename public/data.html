@@ -24,15 +24,15 @@
                 </div>
             </div>
             <div class="title">
-                <h1>US Map with State-wise Heatmap</h1>
+                <h1>Add new Brewery</h1>
             </div>
         </div>
     </header>
 
-    <main>
+    <main class="page-content">
         <!-- Form for adding/editing a brewery -->
         <div id="data-form">
-            <h2>Add/Edit Brewery</h2>
+            <h2></h2>
             <form id="brewery-form" method="POST" action="/data" >
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required>
@@ -65,13 +65,9 @@
                 <label for="latitude">latitude:</label>
                 <input type="text" id="latitude" name="latitude">
                 <br>
-
-                <!-- Hidden input for brewery ID (for editing) -->
-                <label for="brewery_id">Brewery ID:</label>
-                <input type="hidden" id="brewery_id" name="brewery_id">
                 <br>
 
-                <button type="submit" >Send</button>
+                 <button type="submit" >Send</button>
             </form>
         </div>
         <script>
@@ -79,11 +75,9 @@
             alert(message);
         }
 
-        // Function to handle form submission
         function handleFormSubmission() {
             const form = document.getElementById('brewery-form');
 
-            // Create a FormData object to easily construct a key/value pair representation of form fields
             const formData = new FormData(form);
 
             // Convert FormData to a plain object
@@ -91,42 +85,35 @@
             formData.forEach((value, key) => {
                 plainFormData[key] = value;
             });
-
-            // Fetch options for form submission
+           
             const fetchOptions = {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json', // Set the content type to JSON
+                    'Content-Type': 'application/json', 
                 },
-                body: JSON.stringify(plainFormData), // Convert the data to JSON
+                body: JSON.stringify(plainFormData), 
             };
 
-            // Assuming your form has an action attribute set to "/data"
             const action = form.getAttribute('action');
 
-            // Perform the form submission using fetch
             fetch(action, fetchOptions)
                 .then(response => response.json())
                 .then(data => {
-                    // Check if the response contains an error
                     if (data.error) {
-                        // Show an alert with the error message
                         showPopup('Error: ' + data.error);
                     } else {
-                        // Show a popup message
+
                         showPopup('Data has been updated');
 
-                        // Redirect to the main page ("/")
                         window.location.href = '/';
                     }
                 })
                 .catch(error => console.error('Error submitting form:', error));
         }
 
-        // Attach the handleFormSubmission function to the form's submit event
-        document.getElementById('brewery-form').addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent the default form submission
-            handleFormSubmission(); // Call the custom form submission function
+            document.getElementById('brewery-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            handleFormSubmission();
         });
 
         </script>

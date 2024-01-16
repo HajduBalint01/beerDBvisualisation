@@ -24,15 +24,15 @@
                 </div>
             </div>
             <div class="title">
-                <h1>US Map with State-wise Heatmap</h1>
+                <h1>Delete Brewery</h1>
             </div>
         </div>
     </header>
 
-    <main>
-        <!-- Form for deleting a brewery by ID -->
+    <main class="page-content">
+      
         <div id="delete-form">
-            <h2>Delete Brewery by ID</h2>
+            <h2></h2>
             <form id="delete-brewery-form">
                 <label for="breweryId">Brewery ID:</label>
                 <input type="text" id="breweryId" name="breweryId" required><br>
@@ -47,7 +47,7 @@
     </footer>
 
     <script>
-        // Move the deleteBrewery function to a new script
+       
         function deleteBrewery() {
             const breweryId = document.getElementById('breweryId').value;
 
@@ -56,15 +56,14 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Check if the response contains an error
+              
                 if (data.error) {
-                    // Show an alert with the error message
+                    
                     alert('Error: ' + data.error);
                 } else {
-                    // Show a popup message
+                    
                     alert('Brewery has been deleted');
 
-                    // Redirect to the main page ("/")
                     window.location.href = '/';
                 }
             })
