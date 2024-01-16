@@ -146,7 +146,7 @@ return svg.node();
 }
 
 
-export function transformStateToUSFIPS(state) {
+export function transformStateToUSFIPS(state,stateToFip=true) {
     const stateToFIPS = {
         'alabama': '01',
         'alaska': '02',
@@ -200,7 +200,10 @@ export function transformStateToUSFIPS(state) {
         'wisconsin': '55',
         'wyoming': '56',
     };
+    if (stateToFip==true){
     return stateToFIPS[state.toLowerCase()] || state;
+}else{ 
+    return Object.keys (stateToFIPS).find(key => stateToFIPS[key] === state);}
 }
 
 export function processData(databaseData, statesum) {

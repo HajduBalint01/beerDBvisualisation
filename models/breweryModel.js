@@ -64,3 +64,5 @@ class BreweryModel {
 }
 
 module.exports = BreweryModel;
+
+

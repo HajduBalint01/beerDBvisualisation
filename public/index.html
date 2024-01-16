@@ -9,31 +9,27 @@
     <script src="https://unpkg.com/topojson@3"></script>
     <script src="https://observablehq.com/@d3/color-legend"></script>
     <script type="module" src="../controllers/breweryController.js"></script>
-
     <title>US Map with State-wise Heatmap</title>
 </head>
 <body>
-    <header>
-        <h1>US Map with State-wise Heatmap</h1>
-
-        <div id="navbar">
-            <label for="page-selection">Select Page:</label>
-            <select id="page-selection" onchange="navigateToPage()">
-                <option value="">Select Page</option>
-                <option value="/">Home</option>
-                <option value="/delete">Delete</option>
-                <option value="/data">Add</option>
-                <option value="/api/breweries">List of Data</option>
-            </select>
+    <header class="page-header">
+        <div class="title-dropdown-container">
+            <div class="navbar">
+                <div class="dropdown">
+                    <button class="dropbtn">Select Page 
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="/">Home</a>
+                        <a href="/delete">Delete</a>
+                        <a href="/data">Add</a>
+                    </div>
+                </div>
+            </div>
+            <div class="title">
+                <h1>US Map with State-wise Heatmap</h1>
+            </div>
         </div>
-
-        <script>
-            function navigateToPage() {
-                const selectElement = document.getElementById('page-selection');
-                const selectedValue = selectElement.value;
-                window.location.href = selectedValue;
-            }
-        </script>
     </header>
 
     <main>
@@ -46,75 +42,74 @@
     </footer>
 
     <script type="module">
-        import { Legend, transformStateToUSFIPS, processData } from "./dataprocess.js";
+            import { Legend, transformStateToUSFIPS, processData } from "./dataprocess.js";
 
-        const statesum = {};
+            const statesum = {};
 
-        Promise.all([
-            d3.json("10m.json"),
-            fetch('/api/us').then(response => response.json())
-        ]).then(([us, databaseData]) => {
-            processData(databaseData, statesum);
+            let colorScale;
 
-            // generation of the map
+            Promise.all([
+                d3.json("10m.json"),
+                fetch('/api/us').then(response => response.json())
+            ]).then(([us, databaseData]) => {
+                processData(databaseData, statesum);
 
-            const width = 1200;
-            const height = 800;
+                // generation of the map
 
-            const svg = d3.create("svg")
-                .attr("width", width)
-                .attr("height", height)
-                .attr("viewBox", [0, 0, width, height])
-                .style("max-width", "100%")
-                .style("height", "auto");
+                const width = 1200;
+                const height = 800;
 
-            document.getElementById("map-container").appendChild(svg.node());
+                const svg = d3.create("svg")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .attr("viewBox", [0, 0, width, height])
+                    .style("max-width", "100%")
+                    .style("height", "auto");
 
-            let colorScale = d3.scaleSequential(d3.interpolateBlues);
-            colorScale.domain([0, d3.max(Object.values(statesum))]);
+                document.getElementById("map-container").appendChild(svg.node());
 
-            const path = d3.geoPath();
+                let colorScale = d3.scaleSequential(d3.interpolateBlues);
+                colorScale.domain([0, d3.max(Object.values(statesum))]);
 
-            svg.append("g")
-                .attr("transform", "translate(610,20)")
-                .append(() => Legend(colorScale, { title: "Number of breweries", width: 260 }));
+                const path = d3.geoPath();
 
-            svg.append("g")
-                .selectAll("path")
-                .data(topojson.feature(us, us.objects.states).features)
-                .join("path")
-                .attr("fill", d => colorScale(statesum[d.id] || 0))
-                .attr("d", path)
+                svg.append("g")
+                    .attr("transform", "translate(610,20)")
+                    .append(() => Legend(colorScale, { title: "Number of breweries", width: 260 }));
 
-                //mouseover :
-                .on("mouseover", (event, d) => handleMouseover(event, d)) // Attach mouseover event
-                .on("mouseout", () => handleMouseout()); // Attach mouseout event
+                svg.append("g")
+                    .selectAll("path")
+                    .data(topojson.feature(us, us.objects.states).features)
+                    .join("path")
+                    .attr("fill", d => colorScale(statesum[d.id] || 0))
+                    .attr("d", path)
 
-                
-                   function handleMouseover(event, d) {
-                // Create or select the tooltip element
-                let tooltip = d3.select("#tooltip");
+                    //mouseover :
+                    .on("mouseover", (event, d) => handleMouseover(event, d)) // Attach mouseover event
+                    .on("mouseout", () => handleMouseout()); // Attach mouseout event
+                    
+                    function handleMouseover(event, d) {
+    const stateName = transformStateToUSFIPS(d.id, false);
+    let tooltip = d3.select("#tooltip");
 
-                // Get the state name from the FIPS code
-                const stateName = transformStateToUSFIPS(d.id);
+    const totalBreweries = d3.sum(Object.values(statesum));
+    const percentage = totalBreweries !== 0 ? (statesum[d.id] / totalBreweries) * 100 : 0;
 
-                tooltip.html(`<strong>${stateName}</strong><br>Statesum: ${statesum[d.id] || 0}`);
+    tooltip.html(`<strong>${stateName}</strong><br>
+                  Breweries: ${statesum[d.id] || 0}<br>
+                   ${percentage.toFixed(2)}%`);
 
-                const x = event.pageX + 10;
-                const y = event.pageY - 10;
+    const x = event.pageX + 10;
+    const y = event.pageY - 10;
 
-                
-                tooltip.style("left", x + "px")
-                    .style("top", y + "px");
+    tooltip.style("left", x + "px")
+        .style("top", y + "px");
 
-                
-                tooltip.style("display", "block");
-            }
+    tooltip.style("display", "block");
+}
 
-            function handleMouseout() {
-                d3.select("#tooltip").style("display", "none");
-            }
-                }).catch(error => console.error('Error fetching or processing data:', error));
-    </script>
-</body>
-</html>
+                    }).catch(error => console.error('Error fetching or processing data:', error));
+
+        </script>
+    </body>
+    </html>

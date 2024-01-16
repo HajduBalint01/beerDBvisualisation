@@ -9,26 +9,24 @@
     <title>Data Input Page</title>
 </head>
 <body>
-    <header>
-        <h1>Data Input Page</h1>
-        <div id="navbar">
-            <label for="page-selection">Select Page:</label>
-            <select id="page-selection" onchange="navigateToPage()">
-                <option value="">Select Page</option>
-                <option value="/">Home</option>
-                <option value="/delete">Delete</option>
-                <option value="/data">Add</option>
-                <option value="/api/breweries">List of Data</option>
-            </select>
+    <header class="page-header">
+        <div class="title-dropdown-container">
+            <div class="navbar">
+                <div class="dropdown">
+                    <button class="dropbtn">Select Page 
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="/">Home</a>
+                        <a href="/delete">Delete</a>
+                        <a href="/data">Add</a>
+                    </div>
+                </div>
+            </div>
+            <div class="title">
+                <h1>US Map with State-wise Heatmap</h1>
+            </div>
         </div>
-
-        <script>
-            function navigateToPage() {
-                const selectElement = document.getElementById('page-selection');
-                const selectedValue = selectElement.value;
-                window.location.href = selectedValue;
-            }
-        </script>
     </header>
 
     <main>
